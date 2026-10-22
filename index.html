@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="ro">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Parcul Copilului – Cireșarii</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: o cronologie verticală — coloana îngustă din stânga ține anii (ca pe o fișă de arhivă), coloana largă ține textul și fotografiile. */
+:root{
+  --bg:#f3f5f1; --paper:#ffffff; --ink:#1b2420; --muted:#5b6a62; --rule:#d5ddd6;
+  --cherry:#a3173a; --moss:#3f6b4e; --soft:#e7ede6;
+  --display:"Archivo Narrow","Arial Narrow",Arial,sans-serif;
+  --body:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141a17; --paper:#1b2320; --ink:#e4ebe6; --muted:#9aaba1; --rule:#2e3a34;
+  --cherry:#ee6a86; --moss:#86b896; --soft:#202b26; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a17; --paper:#1b2320; --ink:#e4ebe6; --muted:#9aaba1; --rule:#2e3a34;
+  --cherry:#ee6a86; --moss:#86b896; --soft:#202b26; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 64px}
+.wrap{max-width:1060px;margin:0 auto}
+a{color:var(--cherry);text-underline-offset:2px}
+a:focus-visible,button:focus-visible,img:focus-visible{outline:2px solid var(--cherry);outline-offset:3px}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;line-height:1.1;margin:0}
+p{margin:0}
+.mono{font-family:var(--mono)}
+
+/* antet */
+header.top{padding-block:56px 32px;border-bottom:3px solid var(--ink);display:grid;gap:18px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(40px,7vw,78px);font-weight:700;letter-spacing:-.01em}
+h1 span{color:var(--cherry)}
+.lede{max-width:66ch;font-size:19px;color:var(--ink)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+
+/* rezumat */
+.summary{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:28px;padding-block:32px;border-bottom:1px solid var(--rule)}
+.summary ul{margin:0;padding-left:18px;display:grid;gap:8px}
+.summary h2{font-size:22px;margin-bottom:12px;text-transform:uppercase;letter-spacing:.04em}
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);margin-top:18px}
+.facts div{background:var(--paper);padding:12px 14px}
+.facts b{display:block;font-family:var(--display);font-size:26px;line-height:1.1}
+.facts small{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+nav.toc{font-family:var(--mono);font-size:13px;display:flex;flex-wrap:wrap;gap:6px 14px;padding-block:18px;border-bottom:1px solid var(--rule)}
+nav.toc a{color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+nav.toc a:hover{color:var(--cherry);border-color:var(--cherry)}
+
+/* capitole */
+section.era{display:grid;grid-template-columns:150px minmax(0,1fr);gap:28px;padding-block:44px;border-bottom:1px solid var(--rule)}
+.era-label{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start}
+.era-label .yrs{font-family:var(--display);font-weight:700;font-size:30px;line-height:1;color:var(--cherry)}
+.era-label .num{font-family:var(--mono);font-size:12px;color:var(--muted);letter-spacing:.06em}
+.era-body{display:grid;gap:22px;min-width:0}
+.era-body h2{font-size:clamp(28px,3.6vw,40px)}
+.era-body > p,.era-body > ul{max-width:68ch}
+.era-body ul{margin:0;padding-left:18px;display:grid;gap:6px}
+
+/* intrări de cronologie */
+ol.tl{list-style:none;margin:0;padding:0;display:grid;gap:0;max-width:72ch}
+ol.tl li{display:grid;grid-template-columns:118px minmax(0,1fr);gap:14px;padding-block:10px;border-top:1px dashed var(--rule)}
+ol.tl li:first-child{border-top:0}
+ol.tl .d{font-family:var(--mono);font-size:13px;color:var(--moss);padding-top:3px;font-variant-numeric:tabular-nums}
+ol.tl .key .d{color:var(--cherry);font-weight:500}
+ol.tl .key p{font-weight:600}
+
+sup.r{font-family:var(--mono);font-size:10.5px;line-height:0}
+sup.r a{text-decoration:none;padding:0 1px}
+
+/* citat */
+blockquote{margin:0;padding:16px 20px;background:var(--soft);border-left:3px solid var(--moss);max-width:68ch;font-style:italic}
+blockquote cite{display:block;margin-top:8px;font-style:normal;font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+/* casetă conflict */
+.note{border:1px solid var(--cherry);padding:14px 18px;max-width:68ch;background:var(--paper)}
+.note h3{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--cherry);margin-bottom:6px}
+
+/* figuri */
+.figs{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(230px,1fr))}
+.figs.two{grid-template-columns:repeat(auto-fill,minmax(320px,1fr))}
+figure{margin:0;background:var(--paper);border:1px solid var(--rule);display:flex;flex-direction:column;min-width:0}
+figure.wide{grid-column:1/-1}
+figure img{display:block;width:100%;height:220px;object-fit:cover;cursor:zoom-in;background:var(--soft)}
+figure.doc img{object-fit:contain;background:#ece6d6}
+figure.wide img{height:auto;max-height:520px;object-fit:contain}
+.figs.two figure img{height:260px}
+figcaption{padding:10px 12px 12px;font-size:14px;line-height:1.45;display:grid;gap:4px}
+figcaption .y{font-family:var(--mono);font-size:11.5px;color:var(--cherry);letter-spacing:.04em}
+figcaption .cr{font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* referințe */
+ol.refs{margin:0;padding-left:0;list-style:none;display:grid;gap:6px;font-size:14.5px;counter-reset:r}
+ol.refs li{display:grid;grid-template-columns:38px minmax(0,1fr);gap:8px;scroll-margin-top:24px}
+ol.refs li > span:first-child{font-family:var(--mono);font-size:12px;color:var(--muted);padding-top:2px}
+ol.refs li:target{background:var(--soft)}
+ol.refs a{word-break:break-word}
+.refgroup{display:grid;gap:10px}
+.refgroup h3{font-size:16px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:10px}
+
+footer{padding-block:28px;font-family:var(--mono);font-size:12px;color:var(--muted);max-width:80ch}
+
+/* lightbox */
+dialog#lb{border:0;padding:0;background:transparent;max-width:min(96vw,1400px);max-height:94vh}
+dialog#lb::backdrop{background:rgba(10,14,12,.86)}
+dialog#lb img{display:block;max-width:min(96vw,1400px);max-height:84vh;margin:0 auto}
+dialog#lb p{color:#e8eee9;font-size:14px;padding:10px 4px;max-width:90ch;margin:0 auto}
+dialog#lb button{position:absolute;top:6px;right:6px;background:#000a;color:#fff;border:0;font:500 14px var(--mono);padding:6px 10px;cursor:pointer}
+
+@media (max-width:760px){
+  .summary{grid-template-columns:1fr}
+  section.era{grid-template-columns:1fr;gap:14px;padding-block:32px}
+  .era-label{position:static;display:flex;gap:12px;align-items:baseline}
+  ol.tl li{grid-template-columns:1fr;gap:2px}
+  .figs.two{grid-template-columns:1fr}
+  figure img{height:200px}
+}
+@media (prefers-reduced-motion:no-preference){figure img{transition:opacity .2s}figure img:hover{opacity:.9}}
+figure a.ext{display:flex;flex-direction:column;justify-content:center;gap:6px;height:220px;padding:18px;background:var(--soft);color:var(--ink);text-decoration:none;border-bottom:1px solid var(--rule)}
+figure a.ext span{font-family:var(--mono);font-size:13px;color:var(--cherry)}
+figure a.ext small{font-size:14px;color:var(--muted)}
+figure a.ext:hover span{text-decoration:underline}
+@media (max-width:760px){figure a.ext{height:auto;min-height:120px}}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="eyebrow">Raport de documentare · Sectorul 1, București · str. Hermann Oberth nr. 2</div>
+  <h1>Parcul Copilului <span>/</span> Cireșarii</h1>
+  <p class="lede">De la gropile de lut ale cărămidăriei Cuțarida la stadionul de rugby al Griviței, la baza sportivă închisă a Clubului Copiilor și la lupta vecinilor din Domenii pentru redeschiderea ei. Cronologie 1884–2026, cu fotografii și surse.</p>
+  <div class="meta"><span>Actualizat: 22 octombrie 2026</span><span>≈70 de surse</span><span>Imagini libere + trimiteri la sursă</span><span>Limba: română</span></div>
+</header>
+
+<div class="summary">
+  <div>
+    <h2>Pe scurt</h2>
+    <ul>
+      <li>Terenul a fost <b>groapa de lut a fabricii de cărămidă Cuțarida</b> (1895), folosită apoi ca loc de depozitare a gunoaielor orașului. Din 1934 era rezervat pentru parc, iar în 1942 a fost umplut.</li>
+      <li><b>Parcul Copilului a fost inaugurat duminică, 1 august 1948</b>, în prezența lui Petru Groza, pe „locul fostului teren Cuțarida”. Data de 1947 din comunicatele Ministerului Educației este anul începerii lucrărilor.</li>
+      <li>În <b>1952</b>, 60.500 mp din parc au trecut la Atelierele CFR Grivița Roșie. Din <b>1953</b> aici joacă rugby Grivița, pe „Stadionul Parcul Copilului”, și joacă și astăzi.</li>
+      <li>Restul terenului, numit din anii ’80 <b>„Cireșarii”</b>, a ajuns la Ministerul Educației ca bază a Clubului Copiilor Sector 1. După 1990 s-a degradat, iar din 2007–2008 a fost practic închis publicului.</li>
+      <li>Au urmat cereri repetate de preluare: CGMB în 2016, 2018 și 2025, PS1 în 2020 și 2024. Locul a fost <b>redeschis parțial pe 1 iunie 2022</b>. La sfârșitul lui 2026 baza este tot la Ministerul Educației, iar terenul promis de CNI nu a fost început.</li>
+      <li>Cartierul vecin, <b>Parcelarea Domenii</b> (plan din 1916, aprobat în 1923), este zona construită protejată nr. 73. Din 2007 a suferit derogări prin PUZ și demolări.</li>
+    </ul>
+  </div>
+  <div>
+    <figure class="wide"><img src="img/osm_harta_ciresarii_domenii.jpg" alt="Hartă OpenStreetMap a zonei Cireșarii și Domenii" loading="eager"><figcaption><span class="y">2026 · LOCALIZARE</span>Complexul Cireșarii (str. Hermann Oberth 2), între Piața Chibrit și Piața Domenii, lângă Bd. Ion Mihalache. <span class="cr">© OpenStreetMap contributors, ODbL <sup class="r"><a href="#r65">65</a></sup></span></figcaption></figure>
+    <div class="facts">
+      <div><b>60.500 mp</b><small>parcul cedat CFR în 1952</small></div>
+      <div><b>34.300 mp</b><small>baza Cireșarii azi, conform CF</small></div>
+      <div><b>1 aug. 1948</b><small>inaugurarea Parcului Copilului</small></div>
+      <div><b>1953</b><small>primul sezon de rugby al Griviței aici</small></div>
+    </div>
+  </div>
+</div>
+
+<nav class="toc" aria-label="Cuprins">
+  <a href="#e1">1884–1934 Domenii</a><a href="#e2">1895–1942 Groapa Cuțarida</a><a href="#e3">1947–1952 Parcul Copilului</a><a href="#e4">1952–1989 Stadion și Cireșarii</a><a href="#e5">1990–2014 Declin</a><a href="#e6">2000–2026 Zona protejată</a><a href="#e7">2015–2021 Lupta pentru bază</a><a href="#e8">2022–2026 Redeschidere</a><a href="#e9">Rugby azi</a><a href="#e10">Părinți de Cireșari</a><a href="#e11">Neclarități</a><a href="#refs">Surse</a>
+</nav>
+
+<!-- 1 -->
+<section class="era" id="e1">
+  <div class="era-label"><div class="num">CAPITOLUL 1</div><div class="yrs">1884–<br>1934</div></div>
+  <div class="era-body">
+    <h2>Parcelarea Domenii: un oraș-grădină pentru funcționari</h2>
+    <p>Cartierul își trage numele de la Ministerul Domeniilor, pe ai cărui funcționari i-a împroprietărit. Viitorul parc nu se afla în parcelare, ci la marginea ei de vest, spre Calea Griviței și Atelierele CFR.</p>
+    <ol class="tl">
+      <li><span class="d">1884 · 1889–91</span><p>Parlamentul atribuie Casei Regale 12 domenii. În 1889–1891 se creează Ministerul Domeniilor (Gr. Păucescu).<sup class="r"><a href="#r14">14</a></sup></p></li>
+      <li class="key"><span class="d">1916</span><p>Ing. Grigore Popescu întocmește planul de parcelare pentru circa 7 ha din moșia Herăstrău. Loturile sunt destinate exclusiv funcționarilor Ministerului Domeniilor.<sup class="r"><a href="#r15">15</a></sup><sup class="r"><a href="#r16">16</a></sup><sup class="r"><a href="#r7">7</a></sup></p></li>
+      <li><span class="d">după 1918</span><p>Primele loturi se vând imediat după Primul Război Mondial.<sup class="r"><a href="#r15">15</a></sup></p></li>
+      <li class="key"><span class="d">mai 1923</span><p>Planul ajunge la Consiliul Tehnic Superior (dosar 166/1923) și este aprobat: 301 loturi cu front de 18 m, iar strada principală, Al. Constantinescu, are 30 m lățime. Semnează Cincinat Sfințescu, șeful Casei Lucrărilor.<sup class="r"><a href="#r14">14</a></sup></p></li>
+      <li><span class="d">1928 · anii ’30</span><p>Comisia Tehnică constată construcții neautorizate. Urmează a doua etapă, pe străzile Popișteanu, Fuică și Traian Vasile.<sup class="r"><a href="#r14">14</a></sup></p></li>
+      <li><span class="d">1932–1933</span><p>Se ridică vile Art Deco și moderniste: o casă proiectată de arh. R. Michaescu (1932) și un imobil cu turnuri vitrate al arh. Alexandru Zamphiropol (1933). Mai lucrează aici Ionescu-Berechet, Pandele Șerbănescu și Victor Asquini.<sup class="r"><a href="#r9">9</a></sup><sup class="r"><a href="#r10">10</a></sup></p></li>
+      <li><span class="d">1933–1934</span><p>Arh. Horia Creangă construiește casa Dimancescu de pe str. Aviator Sănătescu 50, cu „fațadele inversate”. Tot atunci arh. Nicu Georgescu ridică Hala Domenii.<sup class="r"><a href="#r8">8</a></sup><sup class="r"><a href="#r15">15</a></sup><sup class="r"><a href="#r40">40</a></sup></p></li>
+      <li><span class="d">vara 1934</span><p>Doar un sfert din loturi erau construite. Pe celelalte se pășteau oi. Prin Piața Domeniilor trecea o cale ferată industrială, iar tramvaiul 19 avea capăt în apropiere.<sup class="r"><a href="#r7">7</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure class="doc"><img src="img/bl_plan_parcelare.jpg" alt="Planul de parcelare Domenii"><figcaption><span class="y">c. 1916–1923</span>Planul de parcelare a locurilor de casă pentru funcționarii Ministerului Agriculturii și Domeniilor. <span class="cr">Arhiva familiei Grunau–Dimancescu, via blogul Bonaparte și Domeniilor <sup class="r"><a href="#r7">7</a></sup></span></figcaption></figure>
+      <figure class="doc"><img src="img/bl_harta1936.jpg" alt="Harta 1936 Domenii și Hipodrom"><figcaption><span class="y">1936</span>Harta transportului în comun: Parcul Domeniilor și Hipodromul. <span class="cr">tramclub.org, via Bonaparte și Domeniilor <sup class="r"><a href="#r7">7</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://bonaparte-si-domeniilor.blogspot.com/2010/01/planul-casei-din-sanatescu.html" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Familie în fața casei din Aviator Sănătescu 50</small></a><figcaption><span class="y">anii ’30</span>Familia Dimancescu în fața casei de pe Aviator Sănătescu 50 (arh. Horia Creangă). <span class="cr">Arhivă de familie, via Bonaparte și Domeniilor <sup class="r"><a href="#r8">8</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://b365.ro/domenii-de-vis-cu-case-cu-gradini-de-milioane-peste-o-suta-de-familii-se-lupta-cu-rechini-imobiliari-si-preseaza-administratia-sa-protejeze-frumusetea-unui-cartier-unic-in-bucurest-508465/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Proiectul Halei Domenii</small></a><figcaption><span class="y">1933–1934</span>Proiectul Halei Domenii, arh. Nicu Georgescu. <span class="cr">Arhiva PMB, via B365 <sup class="r"><a href="#r40">40</a></sup></span></figcaption></figure>
+      <figure><img src="img/b365_realitatea1939.jpg" alt="Imobile noi în Domenii, 1939"><figcaption><span class="y">1939</span>Imobile noi în Domenii, în <i>Realitatea Ilustrată</i>. <span class="cr">Via B365 <sup class="r"><a href="#r40">40</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 2 -->
+<section class="era" id="e2">
+  <div class="era-label"><div class="num">CAPITOLUL 2</div><div class="yrs">1895–<br>1942</div></div>
+  <div class="era-body">
+    <h2>Groapa Cuțarida</h2>
+    <p>Locul parcului era o groapă uriașă, rămasă după extragerea lutului pentru cărămizi, la marginea „Comunei Militari”, între Piața Domeniilor și linia ferată spre Constanța.</p>
+    <ol class="tl">
+      <li class="key"><span class="d">1895</span><p>Ing. Nicolae Cuțarida (1854–1929) înființează „fabrica sistematică” de cărămidă de lângă Calea Griviței și Filantropia. Din 1913 produce și tuburi de beton.<sup class="r"><a href="#r11">11</a></sup><sup class="r"><a href="#r2">2</a></sup></p></li>
+      <li><span class="d">1911–1914</span><p>Cuțarida se îndatorează: ipotecă de 122.000 lei (1911), obligație de plată (1913) și scoaterea la licitație a proprietății de la Bariera Griviței nr. 304 (1914), după ce parcelase 140.000 mp.<sup class="r"><a href="#r11">11</a></sup></p></li>
+      <li><span class="d">până în 1923</span><p>Groapa este cedată fraților Goldemberg și exploatată „fără acte”.<sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li><span class="d">1933</span><p>Terenul ajunge la Uzina Metalurgică Grivița, care cere autorizație să construiască locuințe.<sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li class="key"><span class="d">8 mai 1934</span><p>Comisia de sistematizare refuză cererea și <b>rezervă terenul pentru grădini și parcuri</b>.<sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li><span class="d">1936</span><p>Pe harta orașului apare „Fabrica de Cuie” Cuțarida, lângă groapă.<sup class="r"><a href="#r2">2</a></sup></p></li>
+      <li><span class="d">primăvara 1942</span><p>Uzinele Comunale București încep să umple groapa, din ordinul primarului.<sup class="r"><a href="#r12">12</a></sup> Reportajul din 1949 spune că groapa fusese pusă „la dispoziția salubrității”, care aducea aici gunoaiele orașului, iar „cei a căror sănătate era amenințată erau muncitorii din vecinătate”.<sup class="r"><a href="#r1">1</a></sup></p></li>
+    </ol>
+    <div class="note"><h3>Cuțarida nu e Groapa lui Ouatu</h3><p>Reportajul din 1949 pune alături „Gropile lui Ouatu” (fabricantul englez Watt), umplute cu pământul scos de STB pentru linia 19 de pe bd. Mihail Pleșoianu, și groapa Cuțarida, „vecin de domeniu cu Watt”. Unele articole recente le confundă. Groapa lui Ouatu se afla spre Podul Grant, iar romanul <i>Groapa</i> al lui Eugen Barbu este asociat de surse cu zona Cuțarida.<sup class="r"><a href="#r1">1</a></sup><sup class="r"><a href="#r64">64</a></sup><sup class="r"><a href="#r26">26</a></sup></p></div>
+    <div class="figs">
+      <figure class="doc"><img src="img/bvn_plan_pantea.jpg" alt="Planșă din Planul Pântea"><figcaption><span class="y">interbelic (datare nesigură)</span>Planșă din Planul Pântea cu zona Grivița–Domenii și groapa Cuțarida. <span class="cr">Via Bucureștii Vechi și Noi <sup class="r"><a href="#r13">13</a></sup></span></figcaption></figure>
+      <figure class="doc"><img src="img/vc1949_cutarida.jpg" alt="Viața Capitalei 1949: Gropile lui Cuțarida se transformă în parc"><figcaption><span class="y">1949</span>„Gropile lui Cuțarida se transformă în parc”, în <i>Viața Capitalei</i>, p. 3. <span class="cr">Reportaj de Mihail Ursu și R. Poenaru <sup class="r"><a href="#r1">1</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="era" id="e3">
+  <div class="era-label"><div class="num">CAPITOLUL 3</div><div class="yrs">1947–<br>1952</div></div>
+  <div class="era-body">
+    <h2>Se naște Parcul Copilului</h2>
+    <ol class="tl">
+      <li><span class="d">1947</span><p>Încep lucrările de amenajare. Ministerul Educației folosește în comunicatele sale 1947 ca an al inaugurării.<sup class="r"><a href="#r23">23</a></sup><sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li><span class="d">26 mai 1948</span><p><i>România Liberă</i> scrie despre stadiul lucrărilor din „parcul «Copilul» (fosta groapă Cuțarida)”: 20.000 mp de terasamente și 2.000 mp de trotuare de asfalt.<sup class="r"><a href="#r13">13</a></sup></p></li>
+      <li class="key"><span class="d">dum. 1 aug. 1948</span><p>Inaugurarea „Parcului Copilului din Bd. Filantropia, pe locul fostului teren Cuțarida”. Sunt prezenți dr. Petru Groza, gen. V. Dombrovski (primarul general) și C. Doncea. Parcul are terenuri de sport, iar în program erau un solar, dușuri, leagăne și balansoare (<i>Scînteia</i> nr. 1187, 3.08.1948).<sup class="r"><a href="#r13">13</a></sup></p></li>
+      <li><span class="d">15 aug. 1948</span><p>Hugo Conu scrie despre „Parcul Copiilor” în <i>Realitatea Ilustrată</i>.<sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li class="key"><span class="d">1949</span><p><i>Viața Capitalei</i>: „Anul trecut, situația s-a schimbat. Umplerea gropii — de astă dată cu pământ sănătos — a fost accelerată și, în locul ei a răsărit un parc, închinat tinerelor generații — parcul copiilor.” Reporterii îl găsesc însă „o grădină pârjolită de arșița soarelui” și cer iluminat pe timp de noapte și pavarea străzii Stalingrad din fața lui.<sup class="r"><a href="#r1">1</a></sup></p></li>
+      <li><span class="d">22 iun. 1950</span><p><i>Scînteia</i> include parcul în seria „Se înfrumusețează Capitala Patriei noastre”. În noiembrie 1950, <i>România Liberă</i> scrie despre lucrările din raionul Grivița Roșie.<sup class="r"><a href="#r13">13</a></sup></p></li>
+      <li class="key"><span class="d">3 mar. 1952</span><p>La cererea Atelierelor CFR Grivița Roșie (23.02.1952), Sfatul Popular transmite <b>60.500 mp</b> din Parcul Copilului Ministerului Transporturilor, cu condiția ca circa 35% din suprafață să fie plantată (Arhivele PMB, dosar 76/1952).<sup class="r"><a href="#r12">12</a></sup></p></li>
+    </ol>
+    <blockquote>„Gropile Cuțarida sunt astăzi o amintire… Iarbă, pomi, bănci, aparate de gimnastică au fost aduse, schimbând fundamental aspectul întinsului teren.”<cite>Viața Capitalei, 1949, p. 3 <sup class="r"><a href="#r1">1</a></sup></cite></blockquote>
+    <div class="note"><h3>1947, 1 iunie 1948 sau 1 august 1948?</h3><p>Ministerul Educației (2022) vorbește de o inaugurare „în 1947”. Site-ul Mica Ceferiadă dă data de 1.06.1948. Sursa de epocă, <i>Scînteia</i> din 3 august 1948, consemnează inaugurarea oficială „Duminică 1 August a.c.”, iar 1 august 1948 a fost într-adevăr duminică. Reportajul din 1949 („anul trecut”) confirmă anul 1948. Concluzie: lucrările au început în 1947, iar inaugurarea oficială a fost pe 1 august 1948.</p></div>
+    <div class="figs">
+      <figure class="doc"><img src="img/bvn1948_romlib_cutarida.jpg" alt="România Liberă 26 mai 1948"><figcaption><span class="y">26.05.1948</span><i>România Liberă</i>: „Stadiul lucrărilor din parcul «Copilul»”. <span class="cr">Via Bucureștii Vechi și Noi <sup class="r"><a href="#r13">13</a></sup></span></figcaption></figure>
+      <figure class="doc"><img src="img/bvn1948_scinteia_inaugurare.jpg" alt="Scînteia 3 august 1948, inaugurarea Parcului Copilului"><figcaption><span class="y">03.08.1948</span><i>Scînteia</i> nr. 1187: „Inaugurarea Parcului Copilului”. <span class="cr">Via Bucureștii Vechi și Noi <sup class="r"><a href="#r13">13</a></sup></span></figcaption></figure>
+      <figure><img src="img/mc_REALITATEA-ILUSTRATA-1948-SI-1949-1862.jpg" alt="Copii jucând baschet în Parcul Copilului"><figcaption><span class="y">1948–1949</span>Copii jucând baschet în noul parc, în <i>Realitatea Ilustrată</i>. <span class="cr">Via CS Sportul / Mica Ceferiadă <sup class="r"><a href="#r12">12</a></sup></span></figcaption></figure>
+      
+      <figure class="doc"><img src="img/bvn1950_scinteia_2206.jpg" alt="Scînteia 22 iunie 1950"><figcaption><span class="y">22.06.1950</span><i>Scînteia</i>: „Se înfrumusețează Capitala Patriei noastre”. <span class="cr">Via Bucureștii Vechi și Noi <sup class="r"><a href="#r13">13</a></sup></span></figcaption></figure>
+      <figure class="doc"><img src="img/mc_1952_76_Parcul-Copilului-41.jpg" alt="Plan de arhivă Parcul Copilului 1952"><figcaption><span class="y">1952</span>Plan din dosarul 76/1952 „Parcul Copilului”. <span class="cr">Arhivele PMB, via Mica Ceferiadă <sup class="r"><a href="#r12">12</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 4 -->
+<section class="era" id="e4">
+  <div class="era-label"><div class="num">CAPITOLUL 4</div><div class="yrs">1952–<br>1989</div></div>
+  <div class="era-body">
+    <h2>Stadionul Griviței și parcul „Cireșarii”</h2>
+    <p>Din 1952, fostul parc are două părți. Pe latura de est, Atelierele CFR construiesc stadionul de rugby al echipei lor. Pe latura de vest rămâne parcul de joacă și sport pentru copii, care trece la Ministerul Educației și primește în anii ’80 numele „Cireșarii”.</p>
+    <ol class="tl">
+      <li><span class="d">1932</span><p>Ia ființă secția de rugby CFR (decizia FRR din 25.07.1932). Primele antrenamente se țin pe terenul „Triunghi” de lângă liniile ferate.<sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li><span class="d">1951–1953</span><p>Prin muncă voluntară, organizată de directorul Atelierelor, Dumitru Miron, se fac gardul, terenurile și vestiarele, care există și astăzi. Terenul mare servea alternativ pentru fotbal și rugby și era înconjurat de o pistă cu 4 culoare, acoperită cu zgură de la locomotive. Baza mai avea teren de antrenament, baschet, volei, tenis, sectoare de atletism, o cabană și tribune.<sup class="r"><a href="#r12">12</a></sup></p></li>
+      <li class="key"><span class="d">primăvara 1953</span><p>Grivița (pe atunci Locomotiva) joacă pentru prima oară rugby pe „Stadionul Parcul Copilului”. Clubul a câștigat titluri naționale în 1955, 1957–1960, 1962, 1966, 1967, 1969–70 și 1992–93, plus Cupa Campionilor Europeni FIRA în 1964.<sup class="r"><a href="#r12">12</a></sup><sup class="r"><a href="#r49">49</a></sup></p></li>
+      <li><span class="d">1966</span><p>„Parcul Copilului” apare pe harta Bucureștiului. Calea ferată industrială prin Piața Domenii se desființează.<sup class="r"><a href="#r2">2</a></sup><sup class="r"><a href="#r7">7</a></sup></p></li>
+      <li><span class="d">1969</span><p>Grivița Roșie – Progresul București 56–6, meci filmat pe acest teren.<sup class="r"><a href="#r56">56</a></sup></p></li>
+      <li class="key"><span class="d">1972 (sau 1974)</span><p>Parcul de copii trece în administrarea Ministerului Educației și Învățământului. Sursele dau ani diferiți: 1972 (Gândul, Puterea, Mica Ceferiadă), 1974 (Newsweek, Buletin de București) și „circa 30 de ani după 1947” (Digi24).<sup class="r"><a href="#r4">4</a></sup><sup class="r"><a href="#r62">62</a></sup><sup class="r"><a href="#r36">36</a></sup></p></li>
+      <li><span class="d">c. 1975</span><p>Odată cu „Daciada”, se construiesc terenuri de sport, o sală de gimnastică și terenul de fotbal. Dispar florile și o alee de la intrare (data e nesigură și la autorul blogului).<sup class="r"><a href="#r2">2</a></sup></p></li>
+      <li><span class="d">1975–1985</span><p>Se aduc figurinele mari din tablă (Motanul Încălțat, Mickey Mouse, clovnul, chioșcul-dovleac), un tren cu locomotivă și două vagoane, un tobogan-rachetă, un mic lac, o pistă de popice și mese de ping-pong. După 1985 se construiesc scena și poarta-„castel” de la intrarea din str. Hermann Oberth.<sup class="r"><a href="#r3">3</a></sup></p></li>
+      <li class="key"><span class="d">începutul anilor ’80</span><p>Apare numele „Cireșarii”. <i>Ghidul străzilor</i> din 1982 îl folosește deja. Legătura cu romanul lui Constantin Chiriță (1956) sau cu serialul TV din 1972 este plauzibilă, dar nicio sursă nu o confirmă.<sup class="r"><a href="#r25">25</a></sup><sup class="r"><a href="#r56">56</a></sup></p></li>
+      <li><span class="d">vara 1982</span><p>Clubul Grivița Roșie își serbează în Parcul Copilului 50 de ani de existență. Vorbește ing. Ioan Grigore Lăzărescu, fondatorul echipei din 1932.<sup class="r"><a href="#r12">12</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure><a class="ext" href="https://micaceferiada.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Știința Cluj la poarta Stadionului Locomotiva Grivița Roșie</small></a><figcaption><span class="y">anii ’50</span>Jucătorii Științei Cluj ies pe poarta „Stadionului Locomotiva Grivița Roșie” din Parcul Copilului, după meciul cu CFR Grivița (3–35). <span class="cr">Via CS Sportul / Mica Ceferiadă <sup class="r"><a href="#r12">12</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://micaceferiada.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Echipa de rugby Grivița, 1972</small></a><figcaption><span class="y">1972</span>Echipa Griviței după un antrenament cu juniorii. <span class="cr">Via Mica Ceferiadă <sup class="r"><a href="#r12">12</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://stadiondecartier.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Ghidul străzilor București 1982</small></a><figcaption><span class="y">1982</span><i>București – Ghidul străzilor</i>: numele „Cireșarii” apare deja pe hartă. <span class="cr">Via stadiondecartier.cssportul.ro <sup class="r"><a href="#r56">56</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://b365.ro/domenii-de-vis-cu-case-cu-gradini-de-milioane-peste-o-suta-de-familii-se-lupta-cu-rechini-imobiliari-si-preseaza-administratia-sa-protejeze-frumusetea-unui-cartier-unic-in-bucurest-508465/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Tramvaie în zona Domenii, 1979</small></a><figcaption><span class="y">1979</span>Tramvaie în zona Domenii, iarna. <span class="cr">Foto: Șerban Lăcrițeanu / Agerpres, via B365 <sup class="r"><a href="#r40">40</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/06/poze-si-povesti/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Figurinele de basm din parc</small></a><figcaption><span class="y">decor din anii ’70–’80</span>Figurinele de basm: clovnul și „submarinul”. <span class="cr">Blogul Parcul Cireșarii <sup class="r"><a href="#r3">3</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/06/poze-si-povesti/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Pista și terenul de fotbal</small></a><figcaption><span class="y">foto c. 2010–2013</span>Pista ovală și terenul de fotbal din anii Daciadei. <span class="cr">Blogul Parcul Cireșarii <sup class="r"><a href="#r3">3</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="era" id="e5">
+  <div class="era-label"><div class="num">CAPITOLUL 5</div><div class="yrs">1990–<br>2014</div></div>
+  <div class="era-body">
+    <h2>Declinul: parcul „interzis copiilor”</h2>
+    <ol class="tl">
+      <li><span class="d">după 1990</span><p>Ministerul a avut bani doar pentru un gard de sârmă.<sup class="r"><a href="#r33">33</a></sup> Între 1998 și 2005 parcul ajunge distrus și neîngrijit. „Castelul” de la intrare e vopsit în albastru, cu inscripția „Ministerul Educației și Cercetării – Clubul Copiilor Nr. 1 – Complexul Sportiv Cireșarii”.<sup class="r"><a href="#r2">2</a></sup></p></li>
+      <li><span class="d">2004</span><p>Harta „Ghidul Bucureștiului” îl numește „Parcul Sportiv Cireșarii”.<sup class="r"><a href="#r2">2</a></sup></p></li>
+      <li><span class="d">2006</span><p>Vecinii trimit plângeri la autorități. PMB cere Guvernului să treacă parcul la Primăria Sectorului 1.<sup class="r"><a href="#r4">4</a></sup></p></li>
+      <li class="key"><span class="d">2007–2008</span><p>Accesul se restrânge la membrii Clubului Copiilor (Agerpres, Digi24; Puterea indică împrejmuirea în 2008). ONG-ul Eco-Civica sesizează Garda de Mediu pentru construcții ilegale și tăieri de copaci. Sutu.ro publică „Au murit Cireșarii” (31.08.2007). <i>Gândul</i> scrie în 2008 că „administratorul bazei sportive Cireșarii” a fost reclamat la Primărie.<sup class="r"><a href="#r2">2</a></sup><sup class="r"><a href="#r4">4</a></sup><sup class="r"><a href="#r26">26</a></sup></p></li>
+      <li><span class="d">2002 → 2012</span><p>Comparația imaginilor satelitare arată copaci tăiați la capătul terenului de fotbal, o parcare betonată în fața sălii, construcții noi pe spațiul verde și locurile de joacă demontate, cu nisipul înlocuit de beton.<sup class="r"><a href="#r5">5</a></sup></p></li>
+      <li><span class="d">2011</span><p>Metropotam publică „Necrolog: A fost odată Parcul Cireșarii”. Articolul nu mai este online, pentru că domeniul a dispărut.<sup class="r"><a href="#r4">4</a></sup></p></li>
+      <li><span class="d">2013</span><p>Apare blogul parculciresarii.wordpress.com, care adună istoria parcului, petiții și articole. Grivița sărbătorește 20 de ani de la ultimul titlu cu un meci de old-boys pe terenul din Parcul Copilului (10.06.2013).<sup class="r"><a href="#r2">2</a></sup><sup class="r"><a href="#r50">50</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/06/poze-si-povesti/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Gardul vechi al parcului, 2001</small></a><figcaption><span class="y">c. 2001</span>Gardul original al parcului. <span class="cr">Fotografie găsită pe internet de autorul blogului Parcul Cireșarii <sup class="r"><a href="#r3">3</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/11/de-stiut/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Comparație satelitară 2002–2012</small></a><figcaption><span class="y">2002 / 2012</span>Comparație satelitară cu diferențele marcate: arbori tăiați, betonări, construcții noi. <span class="cr">Imagini Google Earth, adnotate de blogul Parcul Cireșarii <sup class="r"><a href="#r5">5</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/03/in-lucru/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Poarta-castel albastră</small></a><figcaption><span class="y">c. 2008–2013</span>Poarta-„castel” de la intrarea din str. Hermann Oberth. <span class="cr">Blogul Parcul Cireșarii <sup class="r"><a href="#r2">2</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/11/de-stiut/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Panoul cu Mickey Mouse</small></a><figcaption><span class="y">c. 2010–2013</span>Figurina Mickey Mouse, rămasă în buruieni. <span class="cr">Blogul Parcul Cireșarii <sup class="r"><a href="#r5">5</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://parculciresarii.wordpress.com/2013/06/06/poze-si-povesti/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Cișmea stricată</small></a><figcaption><span class="y">c. 2010–2013</span>Cișmeaua de lângă locurile de joacă, stricată. <span class="cr">Blogul Parcul Cireșarii <sup class="r"><a href="#r3">3</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="era" id="e6">
+  <div class="era-label"><div class="num">CAPITOLUL 6</div><div class="yrs">2000–<br>2026</div></div>
+  <div class="era-body">
+    <h2>Domenii, zonă construită protejată</h2>
+    <p>În aceeași perioadă, cartierul vecin, de care parcul este legat prin comunitate și prin numele Pieței Domenii, intră sub regim de protecție, dar este afectat de derogări și construcții ilegale.</p>
+    <ol class="tl">
+      <li class="key"><span class="d">2000 · 2009</span><p>„Parcelarea Domenii” devine <b>zona protejată nr. 73</b> prin HCGMB 279/2000 și este reglementată prin <b>HCGMB 34/2009</b> (PUZ pentru zonele construite protejate, una din cele 12 zone-pilot). Regulamentul cere ca noile clădiri să respecte scara celor existente și interzice pereții-cortină, metalul lucios și culorile stridente.<sup class="r"><a href="#r17">17</a></sup><sup class="r"><a href="#r19">19</a></sup></p></li>
+      <li><span class="d">2007–2008</span><p>Pe Sandu Aldea 24, un PUZ aprobat de CGMB (2007) și autorizat de PS1 (2008) permite un bloc P+4 în loc de P+2: POT 40→51%, CUT 1,8→2,7, înălțime 10→18 m. Apar și alte blocuri P+4–P+5 pe Sandu Aldea 4–6 și Al. Constantinescu 6, 8 și 20.<sup class="r"><a href="#r17">17</a></sup></p></li>
+      <li><span class="d">2009</span><p>Demolare ilegală a casei protejate de pe Aviator Sănătescu 37.<sup class="r"><a href="#r61">61</a></sup> Din octombrie 2009, avizele pentru zonele protejate se dau numai la PMB.<sup class="r"><a href="#r19">19</a></sup></p></li>
+      <li><span class="d">12.08.2010</span><p>HotNews publică „Cum a fost mutilat cartierul Domenii”. Casedeepoca scrie că zona este protejată „conform hotărârilor municipale”, dar e afectată de dezvoltatori și de renovări „vulgare”.<sup class="r"><a href="#r17">17</a></sup><sup class="r"><a href="#r9">9</a></sup></p></li>
+      <li><span class="d">ian. 2019</span><p>Valabilitatea de 10 ani a PUZ-ului (HCGMB 34/2009) expiră. USR acuză că neprelungirea lui înseamnă „abuz în serviciu”.<sup class="r"><a href="#r18">18</a></sup></p></li>
+      <li><span class="d">2018</span><p>Cartierul împlinește 100 de ani (reportaj B1TV).<sup class="r"><a href="#r20">20</a></sup></p></li>
+      <li><span class="d">2022–2026</span><p>Piața Domenii: circa 44 de procese-verbale de desființare. Chioșcurile și arcada metalică nu au autorizație, iar arcada face obiectul unui dosar penal. Modificările halei (Mega Image în 2019, apoi „Gusturi Românești”) nu au aviz de la arhitectul-șef.<sup class="r"><a href="#r21">21</a></sup><sup class="r"><a href="#r22">22</a></sup></p></li>
+      <li><span class="d">19.09.2026</span><p>Valentin Mandache organizează un tur Art Deco în Domenii, „zonă de protecție arhitecturală” construită între începutul anilor 1920 și sfârșitul anilor 1950.<sup class="r"><a href="#r10">10</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure><a class="ext" href="https://casedeepoca.wordpress.com/2010/11/12/case-in-stil-art-deco-din-cartierul-domenii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Vilă Art Deco în Domenii</small></a><figcaption><span class="y">foto 2010</span>Vilă Art Deco din Domenii, iarna. <span class="cr">© Valentin Mandache, casedeepoca <sup class="r"><a href="#r9">9</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://casedeepoca.wordpress.com/2010/11/12/case-in-stil-art-deco-din-cartierul-domenii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Imobil modernist în Domenii</small></a><figcaption><span class="y">foto 2010 · clădire 1933</span>Imobil Art Deco–modernist (arh. Al. Zamphiropol). <span class="cr">© Valentin Mandache, casedeepoca <sup class="r"><a href="#r9">9</a></sup></span></figcaption></figure>
+      <figure><img src="img/cm_zorileanu80.jpg" alt="Casă monument Str. Av. Mircea Zorileanu 80"><figcaption><span class="y">foto 2018</span>Casă-monument pe str. Av. Mircea Zorileanu 80. <span class="cr">Adrian Neata / Wikimedia Commons, CC BY-SA 4.0 <sup class="r"><a href="#r66">66</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://jurnalul.ro/campaniile-jurnalul/demolare-ilegala-in-parcul-domenii-522422.html" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Demolare ilegală Sănătescu 37</small></a><figcaption><span class="y">2009</span>Demolarea casei protejate de pe Av. Sănătescu 37. <span class="cr">Jurnalul Național <sup class="r"><a href="#r61">61</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://hotnews.ro/fotogalerie-cum-a-fost-mutilat-cartierul-domenii-715956" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Blocuri noi în Domenii</small></a><figcaption><span class="y">2010</span>Blocuri construite prin derogare, între vilele interbelice. <span class="cr">Foto: Alex Constantinescu / HotNews <sup class="r"><a href="#r17">17</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="era" id="e7">
+  <div class="era-label"><div class="num">CAPITOLUL 7</div><div class="yrs">2015–<br>2021</div></div>
+  <div class="era-body">
+    <h2>Cine preia baza? Zece ani de cereri</h2>
+    <ol class="tl">
+      <li><span class="d">20.07.2015</span><p>Digi24, „Parc cu acces limitat”: circa 30.000 mp și 7 terenuri încuiate. Grupul civic propune abonamente, iar consilierul general Cătălin Câmpeanu inițiază proiectul de transfer.<sup class="r"><a href="#r36">36</a></sup></p></li>
+      <li><span class="d">25–26.01.2016</span><p>CSM București vrea să construiască aici un teren de rugby cu 2.000 de locuri, pistă de atletism, sală de 2.500 de locuri, bazin și hotel sportiv. CGMB votează cererea de transfer, iar Guvernul o refuză.<sup class="r"><a href="#r69">69</a></sup><sup class="r"><a href="#r27">27</a></sup></p></li>
+      <li><span class="d">26.07.2018</span><p>CGMB cere din nou transferul și invocă „valorile culturale” ale locului, inclusiv romanul <i>Groapa</i> al lui Eugen Barbu. Imobilul figura atunci ca „Clubul Copiilor Sector 1 – Baza Sportivă Cireșarii”, în domeniul public al statului.<sup class="r"><a href="#r26">26</a></sup></p></li>
+      <li><span class="d">2018–2020</span><p>Se formează grupul „Părinți de Cireșari”: prima acțiune pe 9.08.2018, petiția „Deschidem Parcul Cireșarii” și manifestul „#cireșarcautparc” pe 8.08.2020.<sup class="r"><a href="#r57">57</a></sup></p></li>
+      <li><span class="d">11.11.2020</span><p>Primarul Clotilde Armand anunță acordul cu ministrul Monica Anisie ca PS1 să preia administrarea.<sup class="r"><a href="#r27">27</a></sup><sup class="r"><a href="#r62">62</a></sup></p></li>
+      <li class="key"><span class="d">8.07.2021</span><p>Armand acuză public firma Eadoris România (Claudiu Laurențiu Barbu, membru în consiliul de administrație al bazei, propus ca „sponsor”) că blochează preluarea. Sunt acuzații politice, nedovedite, și nu se știe ce s-a ales de oferta de „sponsorizare”.<sup class="r"><a href="#r28">28</a></sup></p></li>
+      <li><span class="d">23–25.08.2021</span><p>Ministrul Sorin Cîmpeanu și Armand anunță un parteneriat: igienizarea a peste 31.000 mp, un teren multifuncțional prin CNI (evaluat la 2.982.421 lei) și un concurs de peisagistică. Asociația se opune explicit unui „hotel sportiv”. Daniel Trifu (Eco-Civica) spune că baza fusese lăsată intenționat în paragină.<sup class="r"><a href="#r24">24</a></sup><sup class="r"><a href="#r29">29</a></sup><sup class="r"><a href="#r32">32</a></sup></p></li>
+      <li><span class="d">30.08–4.09.2021</span><p>Voluntari de la USAMV curăță cele 3 hectare. Pe 4.09.2021 are loc „Ziua Curățeniei în Cireșarii”, organizată de comunitate.<sup class="r"><a href="#r31">31</a></sup><sup class="r"><a href="#r57">57</a></sup></p></li>
+      <li><span class="d">8.12.2021</span><p>Terenurile de tenis și handbal sunt „reamenajate” cu copacii lăsați pe suprafața de joc.<sup class="r"><a href="#r33">33</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure><a class="ext" href="https://www.digi24.ro/stiri/actualitate/social/video-parc-cu-acces-limitat-418045" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Terenul de fotbal, 2015</small></a><figcaption><span class="y">2015</span>„Parc cu acces limitat”: terenul de fotbal. <span class="cr">Digi24 <sup class="r"><a href="#r36">36</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://stadiondecartier.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Poarta Complexului Sportiv Cireșarii, 2019</small></a><figcaption><span class="y">04.06.2019</span>Poarta „Ministerul Educației și Cercetării – Clubul Copiilor nr. 1 – Complexul Sportiv Cireșarii”. <span class="cr">stadiondecartier.cssportul.ro <sup class="r"><a href="#r56">56</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://stadiondecartier.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Clovnul de tablă în buruieni, 2019</small></a><figcaption><span class="y">04.06.2019</span>Clovnul de tablă din anii ’80, în iarba înaltă. <span class="cr">stadiondecartier.cssportul.ro <sup class="r"><a href="#r56">56</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.parintideciresari.ro/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>#cireșarcautparc</small></a><figcaption><span class="y">08.08.2020</span>Manifestul „#cireșarcautparc”. <span class="cr">Asociația Părinți de Cireșari <sup class="r"><a href="#r57">57</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.g4media.ro/clotilde-armand-acuza-ca-un-afacerist-apropiat-de-psd-si-de-liviu-dragnea-impiedica-preluarea-bazei-sportive-ciresarii-de-catre-primaria-sectorului-1.html" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Poarta ruginită a complexului</small></a><figcaption><span class="y">2021</span>Poarta complexului, cu vopseaua scorojită. <span class="cr">Grupul „Deschidem Parcul Cireșarii”, via G4Media <sup class="r"><a href="#r28">28</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.edupedu.ro/foto-clubul-copiilor-ciresarii-din-bucuresti-ingropat-in-balarii-ministerul-educatiei-declara-ca-spatiul-va-ramane-al-copiilor-dupa-ce-va-il-va-reabilita-primarul-sectorului-1-d/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Alee năpădită de bălării, 2021</small></a><figcaption><span class="y">aug. 2021</span>Alee năpădită de bălării. <span class="cr">Foto: Ministerul Educației, via Edupedu <sup class="r"><a href="#r30">30</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.edupedu.ro/foto-clubul-copiilor-ciresarii-din-bucuresti-ingropat-in-balarii-ministerul-educatiei-declara-ca-spatiul-va-ramane-al-copiilor-dupa-ce-va-il-va-reabilita-primarul-sectorului-1-d/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Teren de tenis spart, 2021</small></a><figcaption><span class="y">aug. 2021</span>Teren de tenis cu suprafața spartă. <span class="cr">Foto: Ministerul Educației, via Edupedu <sup class="r"><a href="#r30">30</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.edupedu.ro/video-studentii-voluntari-de-la-universitatea-de-agronomie-au-inceput-sa-curete-baza-sportiva-ciresarii-din-sectorul-1-un-spatiu-de-3-hectare-lasat-in-paragina-pe-care-ministerul-educatiei-a-anunta/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Voluntari USAMV curăță baza</small></a><figcaption><span class="y">30.08.2021</span>Voluntari USAMV la curățenie. <span class="cr">Via Edupedu <sup class="r"><a href="#r31">31</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.parintideciresari.ro/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Ziua Curățeniei în Cireșarii</small></a><figcaption><span class="y">04.09.2021</span>„Ziua Curățeniei în Cireșarii”. <span class="cr">Asociația Părinți de Cireșari <sup class="r"><a href="#r57">57</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://newsweek.ro/sport/foto-video-teren-de-tenis-reamenajat-cu-tot-cu-copac-in-parcul-ciresarii-din-bucuresti" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Teren de tenis reamenajat cu copac</small></a><figcaption><span class="y">dec. 2021</span>Teren de tenis „reamenajat cu tot cu copac”. <span class="cr">Newsweek România <sup class="r"><a href="#r33">33</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 8 -->
+<section class="era" id="e8">
+  <div class="era-label"><div class="num">CAPITOLUL 8</div><div class="yrs">2022–<br>2026</div></div>
+  <div class="era-body">
+    <h2>Redeschidere parțială și promisiuni neîmplinite</h2>
+    <ol class="tl">
+      <li class="key"><span class="d">31.05.2022</span><p>Printr-un ordin al ministrului Educației, 1.508 mp din bază sunt predați CNI pentru o „bază sportivă tip 2”: teren multifuncțional handbal/baschet/volei/tenis, vestiare de peste 150 mp și nocturnă. Clubul trebuie să o întrețină cel puțin 15 ani. USAMV a făcut pro bono terenul de fotbal cu gazon natural, drenaj și irigații.<sup class="r"><a href="#r23">23</a></sup><sup class="r"><a href="#r34">34</a></sup><sup class="r"><a href="#r35">35</a></sup></p></li>
+      <li class="key"><span class="d">1.06.2022</span><p><b>Baza se redeschide publicului</b> de Ziua Copilului, cu evenimentul „Jocurile copilăriei”. Program: luni–vineri 15–20, sâmbătă–duminică 8–20 (G4Media: 10–20). Clubul are circa 2.000 de elevi în 19 cercuri.<sup class="r"><a href="#r23">23</a></sup></p></li>
+      <li><span class="d">2.06.2022</span><p>Digi24, „Statul la stat”: terenurile de tenis sunt în stare avansată de degradare, iar terenul de fotbal făcut de USAMV nu e încă folosit. Directorul clubului câștigă 9.147 lei pe lună.<sup class="r"><a href="#r37">37</a></sup> BZI contestă meritul primarului în redeschidere.<sup class="r"><a href="#r63">63</a></sup></p></li>
+      <li><span class="d">sept. 2022</span><p>Scandalul panourilor: o expoziție cu 9 panouri despre Pacepa, Eugen Barbu și Ștefan Foriș este retrasă după reacții publice. Sursele nu spun la fel cine le-a retras.<sup class="r"><a href="#r38">38</a></sup><sup class="r"><a href="#r39">39</a></sup></p></li>
+      <li><span class="d">29.06.2023</span><p>B365: accesul e permis doar în zona marcată, terenul de tenis renovat e încuiat, iar terenul alăturat „este privat și a fost vândut împreună cu fabrica Grivița”.<sup class="r"><a href="#r40">40</a></sup> În octombrie 2023, asociația spune că s-a opus tăierii a 68 de arbori.<sup class="r"><a href="#r41">41</a></sup></p></li>
+      <li><span class="d">3.06.2024</span><p>Blogul Parcul Cireșarii: „După mai bine de 10 ani, s-a deschis cu greu pentru public o bucățică de parc, într-un colț, cu program.”<sup class="r"><a href="#r6">6</a></sup></p></li>
+      <li><span class="d">1.11.2024</span><p>Consiliul Local Sector 1 votează (20 de voturi „pentru”) cererea de transfer pentru 34.300 mp, conform CF. Primarul George Tuță anunță un complex cultural-sportiv.<sup class="r"><a href="#r42">42</a></sup></p></li>
+      <li class="key"><span class="d">aprilie 2025</span><p>CGMB votează în unanimitate (46 de voturi) cererea către Guvern.<sup class="r"><a href="#r43">43</a></sup><sup class="r"><a href="#r44">44</a></sup> Pe lista CNI, „Construire bază sportivă TIP 2, Str. Oberth Herman nr. 2” figurează cu valoarea 0 lei, deci lucrarea nu a început.<sup class="r"><a href="#r67">67</a></sup></p></li>
+      <li><span class="d">12.08.2025</span><p>Se dă aviz pentru defrișarea a 72 de arbori, cu plantarea compensatorie a 82 de arbori până în august 2027.<sup class="r"><a href="#r45">45</a></sup></p></li>
+      <li><span class="d">3–23.03.2026</span><p>Controlul pe teren constată că au fost tăiați doar 24 de arbori și că nu s-a plantat nimic. Mai mulți arbori sunt uscați sau înclinați periculos. Asociația propune un parteneriat pentru un grant de 15.000 € de la Fundația Comunitară București (reîmpădurire și o cișmea „ca în planurile vechi”) și nu primește răspuns.<sup class="r"><a href="#r45">45</a></sup><sup class="r"><a href="#r46">46</a></sup><sup class="r"><a href="#r47">47</a></sup></p></li>
+      <li><span class="d">17.03–6.04.2026</span><p>OUG 15/2026 descentralizează bazele fostului Minister al Tineretului și Sportului, dar nu și Cireșarii, care ține de Ministerul Educației. Petiția are aproape 1.000 de semnături și o scrisoare deschisă către premier (nr. 8939).<sup class="r"><a href="#r48">48</a></sup><sup class="r"><a href="#r57">57</a></sup></p></li>
+      <li class="key"><span class="d">oct. 2026</span><p><b>Situația actuală:</b> baza este tot în domeniul public al statului, administrată de Clubul Copiilor Sector 1 (Ministerul Educației). Transferul către PS1 sau PMB nu a fost aprobat de Guvern, iar terenul CNI nu a fost construit. Pe portal.just.ro nu apare niciun litigiu funciar sau de retrocedare, doar procese salariale ale angajaților clubului (2023–2025).<sup class="r"><a href="#r48">48</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure><a class="ext" href="https://www.edupedu.ro/de-1-iunie-se-redeschide-baza-ciresarii-fostul-parc-al-copiilor-prin-ordin-de-ministru-se-va-realiza-un-nou-teren-multifunct%CC%A6ional-pentru-handbal-baschet-volei-s%CC%A6i-tenis-vestiare-alei/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Panoul Baza Cireșarii cu programul</small></a><figcaption><span class="y">mai 2022</span>Panoul „Clubul Copiilor – Baza Cireșarii” cu programul de acces. <span class="cr">FB primar S1, via Edupedu <sup class="r"><a href="#r35">35</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.edupedu.ro/de-1-iunie-se-redeschide-baza-ciresarii-fostul-parc-al-copiilor-prin-ordin-de-ministru-se-va-realiza-un-nou-teren-multifunct%CC%A6ional-pentru-handbal-baschet-volei-s%CC%A6i-tenis-vestiare-alei/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Copii în costume populare la redeschidere</small></a><figcaption><span class="y">01.06.2022</span>Copii în costume populare la redeschidere. <span class="cr">FB ministrul Educației, via Edupedu <sup class="r"><a href="#r35">35</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.edupedu.ro/de-1-iunie-se-redeschide-baza-ciresarii-fostul-parc-al-copiilor-prin-ordin-de-ministru-se-va-realiza-un-nou-teren-multifunct%CC%A6ional-pentru-handbal-baschet-volei-s%CC%A6i-tenis-vestiare-alei/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Echipe de fotbal pe gazonul nou</small></a><figcaption><span class="y">01.06.2022</span>Echipe de copii pe gazonul făcut de USAMV. <span class="cr">FB ministrul Educației, via Edupedu <sup class="r"><a href="#r35">35</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.parintideciresari.ro/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Prima activitate a comunității în baza redeschisă</small></a><figcaption><span class="y">01.06.2022</span>Prima activitate a comunității în baza redeschisă. <span class="cr">Asociația Părinți de Cireșari <sup class="r"><a href="#r57">57</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://b365.ro/domenii-de-vis-cu-case-cu-gradini-de-milioane-peste-o-suta-de-familii-se-lupta-cu-rechini-imobiliari-si-preseaza-administratia-sa-protejeze-frumusetea-unui-cartier-unic-in-bucurest-508465/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Piatră pictată Baza sportivă Cireșarii</small></a><figcaption><span class="y">2023</span>Piatră pictată de copii: „Baza sportivă Cireșarii”. <span class="cr">Părinți de Cireșari, via B365 <sup class="r"><a href="#r40">40</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.parintideciresari.ro/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Baza Cireșarii, 2026</small></a><figcaption><span class="y">mar. 2026</span>Zona împădurită a bazei, cu arbori uscați și goluri de plantație. <span class="cr">Asociația Părinți de Cireșari <sup class="r"><a href="#r57">57</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://b365.ro/solicitarea-pentru-reimpadurirea-bazei-sportive-ciresari-a-fost-ignorata-de-catre-clubul-copiilor-sector-1-in-paralel-autoritatile-au-descoperit-nereguli-aici-599293/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Baza Cireșarii în 2026</small></a><figcaption><span class="y">mar. 2026</span>Baza astăzi: spațiu verde cu arbori maturi. <span class="cr">Părinți de Cireșari, via B365 <sup class="r"><a href="#r45">45</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section class="era" id="e9">
+  <div class="era-label"><div class="num">CAPITOLUL 9</div><div class="yrs">Rugby<br>azi</div></div>
+  <div class="era-body">
+    <h2>Stadionul Parcul Copilului, casa Griviței</h2>
+    <p>Partea de est a fostului parc, cu terenurile de rugby, nu ține de Ministerul Educației. Rămasă la Atelierele CFR Grivița, a trecut odată cu privatizarea lor în proprietate privată. RC Grivița (12 titluri naționale, Cupa Campionilor Europeni în 1964) își joacă și azi meciurile aici. Pe OpenStreetMap, poligonul complexului are circa 61.600 mp, aproape cât cei 60.500 mp cedați CFR în 1952. Actul de separare nu a fost găsit.<sup class="r"><a href="#r65">65</a></sup><sup class="r"><a href="#r40">40</a></sup></p>
+    <ol class="tl">
+      <li><span class="d">20.10.2019</span><p>Festival AMRB U8–U12: 400–500 de copii din 17 cluburi „pe cele două terenuri ale Rugby Club Grivița”.<sup class="r"><a href="#r51">51</a></sup></p></li>
+      <li><span class="d">2002 · 2022</span><p>Placa „Rugby Club Grivița 1932–2002” este montată în parc. În 2022 clubul împlinește 90 de ani și revine în prima ligă, susținut de Atelierele Grivița.<sup class="r"><a href="#r12">12</a></sup><sup class="r"><a href="#r52">52</a></sup><sup class="r"><a href="#r49">49</a></sup></p></li>
+      <li><span class="d">2022–2025</span><p>Clubul găzduiește evenimentele comunității: Egg Hunt pe terenul de rugby (2022, 2023, 2025), antrenamente pentru copiii din cartier (mai 2023), o grădină și un compostor comunitar.<sup class="r"><a href="#r57">57</a></sup></p></li>
+      <li><span class="d">31.03.2024</span><p>Festivalul „Cristache Mitrea”, ediția a 7-a: peste 500 de copii pe stadionul Parcul Copilului.<sup class="r"><a href="#r53">53</a></sup></p></li>
+      <li><span class="d">28.03.2026</span><p>Grivița – Sportul Studențesc, în Divizia Națională de Seniori, pe „Stadionul Parcul Copilului”. Pe 24.10.2026 este programat aici Grivița – Poli Iași.<sup class="r"><a href="#r54">54</a></sup></p></li>
+      <li><span class="d">12–14.06.2026</span><p>Stade Toulousain organizează un stagiu pentru U12–U16 cu RC Grivița „pe terenul de rugby din Parcul Copilului”.<sup class="r"><a href="#r55">55</a></sup></p></li>
+    </ol>
+    <div class="figs">
+      <figure><a class="ext" href="https://micaceferiada.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Placa Rugby Club Grivița 1932–2002</small></a><figcaption><span class="y">2002</span>Placa comemorativă „Rugby Club Grivița 1932–2002”, montată în Parcul Copilului. <span class="cr">Via Mica Ceferiadă <sup class="r"><a href="#r12">12</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://newsweek.ro/sport/viitorii-stejari-la-joaca-pe-parcul-copilului" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Festival de rugby pentru copii, 2019</small></a><figcaption><span class="y">20.10.2019</span>Festivalul AMRB pentru copii, pe terenurile Griviței. <span class="cr">Foto: Mircea Horobeț / Newsweek România <sup class="r"><a href="#r51">51</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://micaceferiada.cssportul.ro/ciresarii/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Meci de rugby pe stadionul Parcul Copilului</small></a><figcaption><span class="y">c. 2022</span>Meci de rugby pe stadionul Parcul Copilului. <span class="cr">CS Sportul <sup class="r"><a href="#r12">12</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.parintideciresari.ro/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Egg Hunt pe terenul de rugby</small></a><figcaption><span class="y">15.04.2022</span>Egg Hunt pe terenul de rugby al Atelierelor CFR Grivița. <span class="cr">Asociația Părinți de Cireșari <sup class="r"><a href="#r57">57</a></sup></span></figcaption></figure>
+      <figure><a class="ext" href="https://www.parintideciresari.ro/" target="_blank" rel="noopener"><span>Fotografie la sursă ↗</span><small>Antrenament de rugby pentru copiii din cartier</small></a><figcaption><span class="y">mai 2023</span>Antrenament RC Grivița pentru copiii din comunitate. <span class="cr">Asociația Părinți de Cireșari <sup class="r"><a href="#r57">57</a></sup></span></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="era" id="e10">
+  <div class="era-label"><div class="num">CAPITOLUL 10</div><div class="yrs">2018–<br>2026</div></div>
+  <div class="era-body">
+    <h2>Asociația „Părinți de Cireșari – Piața Domenii”</h2>
+    <p>Grupul civic a pornit în 2018 (prima acțiune: 9.08.2018), sub numele inițial „Grupul Civic Domeniile Cireșarilor”, și s-a înregistrat ca asociație în 2020. Președintă este avocata Elena Lucaci, iar membrii fondatori sunt Ana-Maria Malache, Oana Marin și Andreea Derscanu. Are 70–100 de familii active.<sup class="r"><a href="#r57">57</a></sup><sup class="r"><a href="#r58">58</a></sup><sup class="r"><a href="#r40">40</a></sup></p>
+    <ul>
+      <li><b>Pentru bază:</b> petiții (2020, 2026), opoziție la „hotelul sportiv” (2021), la tăierea a 68–72 de arbori (2021–2023) și la lipsa replantărilor (2026), plus cererea de grant de 15.000 €.<sup class="r"><a href="#r32">32</a></sup><sup class="r"><a href="#r41">41</a></sup><sup class="r"><a href="#r47">47</a></sup></li>
+      <li><b>Pentru stradă:</b> „Vara Cireșarilor” pe str. Copilului (din 2021–2022, circa 500 de participanți pe an). În 2026, PS1 a pus în dezbatere str. Copilului ca stradă semipietonală.<sup class="r"><a href="#r59">59</a></sup><sup class="r"><a href="#r60">60</a></sup></li>
+      <li><b>Pentru memorie:</b> seara „Istorie și Adevăr” (30.09.2022), după scandalul panourilor. În aprilie 2026 au cerut restaurarea plăcii despre greva de la Grivița din 1933: „Cartierul nostru a fost construit în mare parte pentru muncitorii Atelierelor CFR Grivița.”<sup class="r"><a href="#r57">57</a></sup></li>
+      <li><b>Parteneri:</b> RC Grivița, USAMV (studenții la peisagistică au vizitat baza pe 24.11.2025), Fundația Comunitară București.<sup class="r"><a href="#r57">57</a></sup></li>
+    </ul>
+    <p class="mono" style="font-size:13px;color:var(--muted)">Notă: pagina de Facebook a asociației nu poate fi citită fără cont. Informațiile vin de pe site-ul parintideciresari.ro, care își publică postările ca fișiere de date, și din presă.</p>
+  </div>
+</section>
+
+<!-- 11 -->
+<section class="era" id="e11">
+  <div class="era-label"><div class="num">ANEXĂ</div><div class="yrs">Nelămurit</div></div>
+  <div class="era-body">
+    <h2>Contradicții și întrebări deschise</h2>
+    <ul>
+      <li><b>Data inaugurării:</b> 1947 (Ministerul Educației), 1.06.1948 (Mica Ceferiadă) sau 1.08.1948 (<i>Scînteia</i>). Sursa de epocă susține 1 august 1948.</li>
+      <li><b>Trecerea la Ministerul Educației:</b> 1972, 1974 sau circa 1977, după sursă.</li>
+      <li><b>Data planului Domenii:</b> 1916 (întocmire) sau 1923 (aprobare). Cele două date se pot împăca.</li>
+      <li><b>Suprafața:</b> 60.500 mp (1952), circa 61.600 mp (poligonul OSM), 34.300 mp (CF, 2024), 33.000 mp (asociația), 31.000 mp (Ministerul Educației, 2021). Diferența corespunde aproximativ terenurilor de rugby, private, dar actul de separare nu a fost găsit.</li>
+      <li><b>Originea numelui „Cireșarii”:</b> nu e documentată. Legătura cu romanul lui Constantin Chiriță e doar probabilă.</li>
+      <li><b>Sala de sport de circa 3.000 mp:</b> anul și constructorul sunt necunoscute.</li>
+      <li><b>Surse pierdute:</b> <i>Gândul</i> 2008, <i>Metropotam</i> 2011, inpolitics, sutu.ro, threadul de pe forumul Softpedia (blocat de Cloudflare) și albumul LiterNet (404). Se pot căuta în Wayback Machine.</li>
+      <li><b>Cartea „Moldoveanu”</b> despre rugby-ul Griviței, citată pe larg de Mica Ceferiadă: titlul complet nu a fost identificat.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- refs -->
+<section class="era" id="refs">
+  <div class="era-label"><div class="num">BIBLIOGRAFIE</div><div class="yrs">Surse</div></div>
+  <div class="era-body">
+    <h2>Referințe</h2>
+    <div class="refgroup">
+      <h3>Surse de epocă și arhivă</h3>
+      <ol class="refs">
+        <li id="r1"><span>[1]</span><span>Mihail Ursu, R. Poenaru, „Steaua, cartierul ceferiștilor” (secțiunea „Gropile lui Cuțarida se transformă în parc”), <i>Viața Capitalei</i>, 1949, p. 3. Copie PDF furnizată de autorul cererii.</span></li>
+        <li id="r11"><span>[11]</span><span>Arhiva de Arhitectură – Nicolae Cuțarida: <a href="https://arhivadearhitectura.ro/arhitecti/nicolae-cutarida/">arhivadearhitectura.ro/arhitecti/nicolae-cutarida</a></span></li>
+        <li id="r12"><span>[12]</span><span>CS Sportul, „Mica Ceferiadă – Cireșarii” (citează Arhivele PMB, dosar 76/1952, și cartea lui Moldoveanu despre rugby-ul CFR): <a href="https://micaceferiada.cssportul.ro/ciresarii/">micaceferiada.cssportul.ro/ciresarii</a></span></li>
+        <li id="r13"><span>[13]</span><span>A. Slavuteanul, „Cuțarida – presa vremii”, Bucureștii Vechi și Noi, 3.08.2016 (scanări din <i>România Liberă</i> 26.05.1948, <i>Scînteia</i> 3.08.1948, <i>Scînteia</i> 22.06.1950, <i>România Liberă</i> 25.11.1950): <a href="https://bucurestiivechisinoi.ro/2016/08/cutarida-presa-vremii/">bucurestiivechisinoi.ro/2016/08/cutarida-presa-vremii</a></span></li>
+        <li id="r56"><span>[56]</span><span>CS Sportul, „Stadion de cartier – Cireșarii”: <a href="https://stadiondecartier.cssportul.ro/ciresarii/">stadiondecartier.cssportul.ro/ciresarii</a></span></li>
+      </ol>
+      <h3>Bloguri</h3>
+      <ol class="refs">
+        <li id="r2"><span>[2]</span><span>Parcul Cireșarii, „În lucru” (istoric): <a href="https://parculciresarii.wordpress.com/2013/06/03/in-lucru/">parculciresarii.wordpress.com/2013/06/03/in-lucru</a></span></li>
+        <li id="r3"><span>[3]</span><span>Parcul Cireșarii, „Poze și povești”: <a href="https://parculciresarii.wordpress.com/2013/06/06/poze-si-povesti/">parculciresarii.wordpress.com/2013/06/06/poze-si-povesti</a></span></li>
+        <li id="r4"><span>[4]</span><span>Parcul Cireșarii, „Și ei vor parcul înapoi” (presa 2006–2011): <a href="https://parculciresarii.wordpress.com/si-ei-vor-parcul-inapoi/">parculciresarii.wordpress.com/si-ei-vor-parcul-inapoi</a></span></li>
+        <li id="r5"><span>[5]</span><span>Parcul Cireșarii, „De știut” (comparația 2002–2012): <a href="https://parculciresarii.wordpress.com/2013/06/11/de-stiut/">parculciresarii.wordpress.com/2013/06/11/de-stiut</a></span></li>
+        <li id="r6"><span>[6]</span><span>Parcul Cireșarii, „În 2024”: <a href="https://parculciresarii.wordpress.com/2024/06/03/in-2024/">parculciresarii.wordpress.com/2024/06/03/in-2024</a></span></li>
+        <li id="r7"><span>[7]</span><span>R. M. Dimancescu, „Parcul Domeniilor”, blogul <i>Amintirile mele între Bonaparte și Domeniilor</i>: <a href="https://bonaparte-si-domeniilor.blogspot.com/2010/01/parcul-domeniilor.html">bonaparte-si-domeniilor.blogspot.com/2010/01/parcul-domeniilor.html</a></span></li>
+        <li id="r8"><span>[8]</span><span>R. M. Dimancescu, „Planul casei din Sănătescu”: <a href="https://bonaparte-si-domeniilor.blogspot.com/2010/01/planul-casei-din-sanatescu.html">bonaparte-si-domeniilor.blogspot.com/2010/01/planul-casei-din-sanatescu.html</a></span></li>
+        <li id="r9"><span>[9]</span><span>V. Mandache, „Case în stil Art Deco din cartierul Domenii”, Case de Epocă, 12.11.2010: <a href="https://casedeepoca.wordpress.com/2010/11/12/case-in-stil-art-deco-din-cartierul-domenii/">casedeepoca.wordpress.com/2010/11/12/…</a></span></li>
+        <li id="r10"><span>[10]</span><span>V. Mandache, „Tur: stilul Art Deco al cartierului Domenii”, 15.09.2026: <a href="https://casedeepoca.wordpress.com/2026/09/15/tur-stilul-art-deco-al-cartierului-domenii-sambata-19-septembrie/">casedeepoca.wordpress.com/2026/09/15/…</a></span></li>
+        <li id="r14"><span>[14]</span><span>R. Voinea, D. Dolghin, „Parcul Domenii – orașul-grădină din nordul Bucureștiului”, LiterNet, 3.08.2013: <a href="https://atelier.liternet.ro/articol/13435/Razvan-Voinea-Dana-Dolghin/Parcul-Domenii-orasul-gradina-din-nordul-Bucurestiului.html">atelier.liternet.ro/articol/13435/…</a></span></li>
+        <li id="r15"><span>[15]</span><span>Restitutio Interbellica, „Parcul Domeniilor”: <a href="https://restitutio-interbellica.blogspot.com/2009/11/parcul-domeniilor.html">restitutio-interbellica.blogspot.com/2009/11/parcul-domeniilor.html</a></span></li>
+        <li id="r57"><span>[57]</span><span>Asociația Părinți de Cireșari – Piața Domenii: <a href="https://www.parintideciresari.ro/">parintideciresari.ro</a> (evenimente: <a href="https://www.parintideciresari.ro/content/events.json">events.json</a>; anunțuri: <a href="https://www.parintideciresari.ro/content/announcements.json">announcements.json</a>)</span></li>
+        <li id="r58"><span>[58]</span><span>București Civic, „Grupul de inițiativă civică Părinți de Cireșari”: <a href="https://bucuresticivic.ro/grupul-de-initiativa-civica-parinti-de-ciresari/">bucuresticivic.ro/…</a></span></li>
+      </ol>
+      <h3>Instituții</h3>
+      <ol class="refs">
+        <li id="r23"><span>[23]</span><span>Ministerul Educației, comunicat 26/2022, redeschiderea Bazei Cireșarii: <a href="https://edu.ro/comunicat_presa_26_2022_redeschidere_Baza_Ciresarii">edu.ro/comunicat_presa_26_2022_redeschidere_Baza_Ciresarii</a></span></li>
+        <li id="r24"><span>[24]</span><span>Ministerul Educației, „Clubul Copiilor Cireșarii este și va rămâne al copiilor”, 23.08.2021: <a href="https://edu.ro/clubul-copiilor-cire%C8%99arii-este-%C8%99i-va-r%C4%83m%C3%A2ne-al-copiilor-31000-mp-%C3%AEn-centrul-bucure%C8%99tiului-deschidere">edu.ro/…</a></span></li>
+        <li id="r43"><span>[43]</span><span>Primăria Sectorului 1, „Consiliul General – vot unanim pentru modernizarea Clubului Cireșarii”, 3.04.2025: <a href="https://primariasector1.ro/consiliul-general-vot-unanim-pentru-modernizarea-clubului-ciresarii/">primariasector1.ro/…</a></span></li>
+        <li id="r67"><span>[67]</span><span>CNI, lista obiectivelor (Construire bază sportivă TIP 2, Str. Oberth Herman nr. 2): <a href="https://www.cni.ro/">cni.ro</a></span></li>
+        <li id="r19"><span>[19]</span><span>Pro Patrimonio, „Raport Patrimoniul București 2013”: <a href="https://propatrimonio.org/wp-content/uploads/2018/02/Raport-Patrimoniul-Bucuresti-2013.pdf">propatrimonio.org/…/Raport-Patrimoniul-Bucuresti-2013.pdf</a></span></li>
+        <li id="r16"><span>[16]</span><span>Anuala de Arhitectură 2016, proiect 023 (Domenii): <a href="https://www.anuala.ro/en/projects/2016/023/">anuala.ro/en/projects/2016/023</a></span></li>
+      </ol>
+      <h3>Presă</h3>
+      <ol class="refs">
+        <li id="r17"><span>[17]</span><span>C. Ivanov, „Cum a fost mutilat cartierul Domenii”, HotNews, 12.08.2010: <a href="https://hotnews.ro/fotogalerie-cum-a-fost-mutilat-cartierul-domenii-715956">hotnews.ro/…-715956</a></span></li>
+        <li id="r18"><span>[18]</span><span>Agerpres, 31.01.2019, PUZ zone protejate: <a href="https://agerpres.ro/administratie/2019/01/31/wring-usr-neprelungirea-unui-puz-privind-zone-protejate-constituie-abuz-in-serviciu--250544">agerpres.ro/…/250544</a></span></li>
+        <li id="r20"><span>[20]</span><span>B1TV, „Cartierul Domenii – centenar”, 29.07.2018: <a href="https://www.b1tv.ro/externe/cartierul-domenii-bucuresti-centenar-234280.html">b1tv.ro/…-234280.html</a></span></li>
+        <li id="r21"><span>[21]</span><span>București FM, „Piața Domenii, între trecut și prezent”, 5.01.2026: <a href="https://www.bucurestifm.ro/2026/01/05/piata-domenii-intre-trecut-si-prezent-patrimoniu-distrus-si-constructii-ilegale/">bucurestifm.ro/2026/01/05/…</a></span></li>
+        <li id="r22"><span>[22]</span><span>București FM, „Piața Domenii: construcții ilegale pe domeniul public”, 22.01.2026: <a href="https://www.bucurestifm.ro/2026/01/22/piata-domenii-constructii-ilegale-pe-domeniul-public-chioscurile-nu-au-fost-autorizate-nici-de-catre-primaria-municipiului-bucuresti-nici-de-catre-cea-a-sectorului-1/">bucurestifm.ro/2026/01/22/…</a></span></li>
+        <li id="r25"><span>[25]</span><span>F. Antonescu, „Parcul Copilului, pe cale să se întoarcă în folosul copiilor”, Tribuna Învățământului, 25.08.2021: <a href="https://tribunainvatamantului.ro/parcul-copilului-pe-cale-sa-se-intoarca-in-folosul-copiilor/">tribunainvatamantului.ro/…</a></span></li>
+        <li id="r26"><span>[26]</span><span>Agerpres, „CGMB dorește să preia în administrare baza sportivă Cireșarii”, 26.07.2018: <a href="https://agerpres.ro/administratie/2018/07/26/cgmb-doreste-sa-preia-in-administrare-baza-sportiva-ciresarii--151233">agerpres.ro/…/151233</a></span></li>
+        <li id="r27"><span>[27]</span><span>Agerpres, „Clotilde Armand: Parcul și clubul sportiv Cireșarii vor intra în administrarea PS1”, 11.11.2020: <a href="https://agerpres.ro/administratie/2020/11/11/clotilde-armand-parcul-si-clubul-sportiv-ciresarii-vor-intra-in-administrarea-primariei-sectorului-1--607652">agerpres.ro/…/607652</a></span></li>
+        <li id="r28"><span>[28]</span><span>G4Media, 8.07.2021, acuzațiile privind preluarea bazei: <a href="https://www.g4media.ro/clotilde-armand-acuza-ca-un-afacerist-apropiat-de-psd-si-de-liviu-dragnea-impiedica-preluarea-bazei-sportive-ciresarii-de-catre-primaria-sectorului-1.html">g4media.ro/…</a></span></li>
+        <li id="r29"><span>[29]</span><span>D. Popa, G4Media, 30.08.2021, „Baza sportivă Cireșarii de 31.000 mp… a fost lăsată în paragină intenționat”: <a href="https://www.g4media.ro/baza-sportiva-ciresarii-de-31-000-mp-din-inima-sectorului-1-ar-putea-fi-redata-copiilor-de-a-lungul-anilor-a-fost-lasata-in-paragina-intentionat-si-a-fost-tinta-rechinilor-imobiliari.html">g4media.ro/…</a></span></li>
+        <li id="r30"><span>[30]</span><span>Edupedu, „Clubul Copiilor Cireșarii, îngropat în bălării”, aug. 2021: <a href="https://www.edupedu.ro/foto-clubul-copiilor-ciresarii-din-bucuresti-ingropat-in-balarii-ministerul-educatiei-declara-ca-spatiul-va-ramane-al-copiilor-dupa-ce-va-il-va-reabilita-primarul-sectorului-1-d/">edupedu.ro/…</a></span></li>
+        <li id="r31"><span>[31]</span><span>Edupedu, studenții USAMV curăță baza, 30.08.2021: <a href="https://www.edupedu.ro/video-studentii-voluntari-de-la-universitatea-de-agronomie-au-inceput-sa-curete-baza-sportiva-ciresarii-din-sectorul-1-un-spatiu-de-3-hectare-lasat-in-paragina-pe-care-ministerul-educatiei-a-anunta/">edupedu.ro/…</a></span></li>
+        <li id="r32"><span>[32]</span><span>Click, „Baza sportivă Cireșarii va fi redeschisă”, 25.08.2021: <a href="https://click.ro/actualitate/national/baza-sportiva-ciresarii-va-fi-redeschisa-4020.html">click.ro/…-4020.html</a></span></li>
+        <li id="r33"><span>[33]</span><span>M. Duță, Newsweek România, „Teren de tenis reamenajat cu tot cu copac”, 8.12.2021: <a href="https://newsweek.ro/sport/foto-video-teren-de-tenis-reamenajat-cu-tot-cu-copac-in-parcul-ciresarii-din-bucuresti">newsweek.ro/…</a></span></li>
+        <li id="r34"><span>[34]</span><span>Agerpres, „Ministerul Educației redeschide de Ziua Copilului Baza Cireșarii”, 31.05.2022: <a href="https://agerpres.ro/educatie-stiinta/2022/05/31/ministerul-educatiei-redeschide-de-ziua-copilului-baza-ciresarii--927704">agerpres.ro/…/927704</a></span></li>
+        <li id="r35"><span>[35]</span><span>Edupedu, „De 1 iunie se redeschide Baza Cireșarii, fostul Parc al Copiilor”, 2022: <a href="https://www.edupedu.ro/de-1-iunie-se-redeschide-baza-ciresarii-fostul-parc-al-copiilor-prin-ordin-de-ministru-se-va-realiza-un-nou-teren-multifunct%CC%A6ional-pentru-handbal-baschet-volei-s%CC%A6i-tenis-vestiare-alei/">edupedu.ro/…</a></span></li>
+        <li id="r36"><span>[36]</span><span>Digi24, „Parc cu acces limitat”, 20.07.2015: <a href="https://www.digi24.ro/stiri/actualitate/social/video-parc-cu-acces-limitat-418045">digi24.ro/…-418045</a></span></li>
+        <li id="r37"><span>[37]</span><span>T. Petcu, Digi24, „Statul la stat: Baza Cireșarii redeschisă cu terenuri care pun în pericol copiii”, 2.06.2022: <a href="https://www.digi24.ro/special/statul-la-stat/statul-la-stat-baza-ciresarii-redeschisa-cu-terenuri-care-pun-in-pericol-copiii-ce-spune-directorul-care-castiga-9-147-lei-pe-luna-1960413">digi24.ro/…-1960413</a></span></li>
+        <li id="r38"><span>[38]</span><span>Europa Liberă, „Scandal comunist la Baza Cireșarii”, sept. 2022: <a href="https://romania.europalibera.org/a/scandal-comunist-la-baza-ciresarii/32041571.html">europalibera.org/…/32041571.html</a></span></li>
+        <li id="r39"><span>[39]</span><span>Newsweek România, panourile din Sectorul 1, sept. 2022: <a href="https://newsweek.ro/actualitate/panouri-elogioase-cu-pacepa-si-comunistii-eugen-barbu-si-st-foris-in-sectorul-1-ce-zice-clotilde">newsweek.ro/…</a></span></li>
+        <li id="r40"><span>[40]</span><span>A. Dohotariu, B365, „Domenii de vis…”, 29.06.2023: <a href="https://b365.ro/domenii-de-vis-cu-case-cu-gradini-de-milioane-peste-o-suta-de-familii-se-lupta-cu-rechini-imobiliari-si-preseaza-administratia-sa-protejeze-frumusetea-unui-cartier-unic-in-bucurest-508465/">b365.ro/…-508465</a></span></li>
+        <li id="r41"><span>[41]</span><span>cere.ong, „Părinți de Cireșari – târg”, 11.10.2023: <a href="https://cere.ong/2023/10/11/parintideciresari-targ/">cere.ong/2023/10/11/parintideciresari-targ</a></span></li>
+        <li id="r42"><span>[42]</span><span>Buletin de București, 4.11.2024, „Sector 1: Cinematograful Giulești și Baza sportivă Cireșarii”: <a href="https://buletin.de/bucuresti/sector-1-cinematograful-giulesti-si-baza-sportiva-ciresarii-de-la-ana-la-caiafa-pana-la-modernizare/">buletin.de/…</a></span></li>
+        <li id="r44"><span>[44]</span><span>Buletin de București, 7.04.2025, „Clubul Copiilor Cireșarii este cerut din nou de la Guvern”: <a href="https://buletin.de/bucuresti/clubul-copiilor-ciresarii-este-cerut-din-nou-de-la-guvern-incercari-de-preluare-de-catre-sectorul-1-se-fac-de-10-ani/">buletin.de/…</a></span></li>
+        <li id="r45"><span>[45]</span><span>B365, 23.03.2026, reîmpădurirea Bazei Cireșarii: <a href="https://b365.ro/solicitarea-pentru-reimpadurirea-bazei-sportive-ciresari-a-fost-ignorata-de-catre-clubul-copiilor-sector-1-in-paralel-autoritatile-au-descoperit-nereguli-aici-599293/">b365.ro/…-599293</a></span></li>
+        <li id="r46"><span>[46]</span><span>Green Community, 23.03.2026: <a href="https://greencommunity.ro/baza-ciresarii-din-bucuresti-reimpadurirea-propusa-de-comunitate-ignorata-de-autoritati-intre-timp-spatiul-verde-se-degradeaza-de-la-o-zi-la-alta/">greencommunity.ro/…</a></span></li>
+        <li id="r47"><span>[47]</span><span>Buletin de București, martie 2026, grantul de 15.000 €: <a href="https://buletin.de/bucuresti/baza-sportiva-ciresarii-ar-putea-fi-reimpadurita-proiect-de-parteneriat-pentru-obtinerea-unui-grant-de-15-000-de-euro/">buletin.de/…</a></span></li>
+        <li id="r48"><span>[48]</span><span>A. Stănărîngă, Buletin de București, 6.04.2026, „Birocrația distruge Baza Cireșarii”: <a href="https://buletin.de/bucuresti/birocratia-distruge-baza-ciresarii-siguranta-copiilor-pusa-in-pericol-conducerea-ignora-fonduri-de-15-000-de-euro-pentru-reimpadurire/">buletin.de/…</a></span></li>
+        <li id="r59"><span>[59]</span><span>C. Ivanov, HotNews, 19.04.2026, „Unde a dispărut Bucureștiul în care copiii băteau mingea în fața blocului”: <a href="https://hotnews.ro/unde-a-disparut-bucurestiul-in-care-copiii-bateau-mingea-in-fata-blocului-cum-pot-oameni-sa-si-recucereasca-orasul-2204661">hotnews.ro/…-2204661</a></span></li>
+        <li id="r60"><span>[60]</span><span>Totul despre Mame, 3.06.2026, „Satul din mijlocul Bucureștiului”: <a href="https://totuldespremame.ro/tu-mama/lumea-in-care-traim/satul-din-mijlocul-bucurestiului-cum-au-construit-niste-parinti-din-sectorul-1-o-comunitate-pentru-copiii-lor">totuldespremame.ro/…</a></span></li>
+        <li id="r61"><span>[61]</span><span>Jurnalul Național, „Demolare ilegală în Parcul Domenii”, 2009: <a href="https://jurnalul.ro/campaniile-jurnalul/demolare-ilegala-in-parcul-domenii-522422.html">jurnalul.ro/…-522422.html</a></span></li>
+        <li id="r62"><span>[62]</span><span>Puterea, 11.11.2020: <a href="https://www.puterea.ro/?p=19786">puterea.ro/?p=19786</a></span></li>
+        <li id="r63"><span>[63]</span><span>BZI, 1.06.2022 (opinie): <a href="https://www.bzi.ro/clotilde-armand-minte-cu-nerusinare-despre-redeschiderea-unui-parc-4466497">bzi.ro/…-4466497</a></span></li>
+        <li id="r64"><span>[64]</span><span>România Liberă, „Înapoi în Groapa lui Ouatu, lângă Podul Grant”: <a href="https://romanialibera.ro/aldine/inapoi-in-groapa-lui-ouatu-langa-podul-grant-827807/">romanialibera.ro/…-827807</a></span></li>
+        <li id="r69"><span>[69]</span><span>România TV, ian. 2016, proiectul CSM București: <a href="https://www.romaniatv.net/baza-sportiva-noua-in-bucuresti-teren-de-rugby-bazin-de-inot-si-pista-de-atletism_270130.html">romaniatv.net/…_270130.html</a></span></li>
+      </ol>
+      <h3>Rugby</h3>
+      <ol class="refs">
+        <li id="r49"><span>[49]</span><span>Wikipedia, „RC Grivița București”: <a href="https://en.wikipedia.org/wiki/RC_Grivi%C8%9Ba_Bucure%C8%99ti">en.wikipedia.org/wiki/RC_Grivița_București</a></span></li>
+        <li id="r50"><span>[50]</span><span>Digisport, „Grivița a sărbătorit 20 de ani de la ultimul titlu”, 2013: <a href="https://www.digisport.ro/rugby/grivita-a-sarbatorit-20-de-ani-de-la-ultimul-titlu-acum-este-in-liga-a-3-a-56656">digisport.ro/…-56656</a></span></li>
+        <li id="r51"><span>[51]</span><span>Newsweek România, „Viitorii stejari, la joacă pe Parcul Copilului”, 2019: <a href="https://newsweek.ro/sport/viitorii-stejari-la-joaca-pe-parcul-copilului">newsweek.ro/sport/viitorii-stejari-la-joaca-pe-parcul-copilului</a></span></li>
+        <li id="r52"><span>[52]</span><span>SPTFM, „Rugby Club Grivița Roșie la 90 de ani”, 22.10.2022: <a href="https://sptfm.ro/rugby-club-grivita-rosie-la-90-de-ani-dupa-infiintare-povestea-merge-mai-departe-costurile-sunt-destul-de-mari-iar-banii-sunt-putini-1/">sptfm.ro/…</a></span></li>
+        <li id="r53"><span>[53]</span><span>Newsweek România, Festivalul „Cristache Mitrea”, 2024: <a href="https://newsweek.ro/sport/video-cum-s-au-bucurat-de-rugby-peste-500-de-copii-la-festivalul-cristache-mitrea">newsweek.ro/…</a></span></li>
+        <li id="r54"><span>[54]</span><span>Rugby România, „Grivița – Sportul Studențesc, un derby cu o vechime de aproape un secol”, 2026: <a href="https://rugbyromania.ro/grivita-sportul-studentesc-un-derby-cu-o-vechime-de-aproape-un-secol/">rugbyromania.ro/…</a></span></li>
+        <li id="r55"><span>[55]</span><span>Rugby România, stagiul Stade Toulousain cu RC Grivița, 2026: <a href="https://rugbyromania.ro/stade-toulousain-organizeaza-stagiu-de-pregatire-de-trei-zile-la-bucuresti-in-luna-iunie-pe-grivita/">rugbyromania.ro/…</a></span></li>
+      </ol>
+      <h3>Hărți și imagini libere</h3>
+      <ol class="refs">
+        <li id="r65"><span>[65]</span><span>OpenStreetMap, „Complexul Sportiv Cireșarii” (way 23622936), © OpenStreetMap contributors, ODbL: <a href="https://www.openstreetmap.org/way/23622936">openstreetmap.org/way/23622936</a></span></li>
+        <li id="r66"><span>[66]</span><span>Wikimedia Commons, „Casă, Str. Zorileanu Mircea av. 80, sector 1”, Adrian Neata, CC BY-SA 4.0: <a href="https://commons.wikimedia.org/wiki/File:Cas%C4%83,_Str._Zorileanu_Mircea_av._80,_sector_1.jpg">commons.wikimedia.org/…</a></span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Pagina reproduce doar imagini cu licență liberă (Wikimedia Commons CC BY-SA 4.0, OpenStreetMap ODbL), documente și presă de arhivă din 1916–1952 și un scurt extras citat din Viața Capitalei (1949). Fotografiile recente aparțin autorilor lor și sunt accesibile prin linkurile „Fotografie la sursă”. Faptele marcate drept acuzații sau inferențe nu au fost confirmate independent.
+</footer>
+</div>
+
+<dialog id="lb" aria-label="Imagine mărită"><button type="button" id="lbx">Închide ✕</button><img id="lbi" alt=""><p id="lbc"></p></dialog>
+<script>
+(function(){
+  var d=document.getElementById('lb'),i=document.getElementById('lbi'),c=document.getElementById('lbc');
+  document.querySelectorAll('figure img').forEach(function(im){
+    im.tabIndex=0;
+    function open(){ i.src=im.src; i.alt=im.alt; var fc=im.parentNode.querySelector('figcaption'); c.textContent=fc?fc.textContent.replace(/\s+/g,' ').trim():''; if(d.showModal) d.showModal(); }
+    im.addEventListener('click',open);
+    im.addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();open();} });
+  });
+  document.getElementById('lbx').addEventListener('click',function(){d.close();});
+  d.addEventListener('click',function(e){ if(e.target===d) d.close(); });
+})();
+</script>
